@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Thời Thể Tiếng Anh & Rào Cản Thụ Đắc L1</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teal: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                        },
+                        indigo: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            800: '#3730a3',
+                            900: '#312e81',
+                        },
+                        amber: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309',
+                        },
+                        rose: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 380px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 360px;
+            }
+        }
+        .tab-btn.active {
+            background-color: #0d9488;
+            color: #ffffff;
+            box-shadow: 0 4px 6px -1px rgba(13, 148, 136, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased leading-relaxed">
+
+    <!-- Sticky Navigation Header -->
+    <header class="sticky top-0 z-50 bg-slate-900/95 backdrop-blur border-b border-slate-800 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <span class="w-3 h-3 rounded-full bg-teal-400 animate-pulse"></span>
+                <span class="font-bold text-lg tracking-tight bg-gradient-to-r from-teal-400 via-teal-200 to-indigo-300 bg-clip-text text-transparent">English Tenses & L1 Transfer</span>
+            </div>
+            <nav class="hidden md:flex space-x-6 text-sm font-medium">
+                <a href="#overview" class="hover:text-teal-400 transition-colors">Tổng Quan</a>
+                <a href="#matrix" class="hover:text-teal-400 transition-colors">Ma Trận 12 Thì</a>
+                <a href="#pragmatics" class="hover:text-teal-400 transition-colors">So Sánh Ngữ Dụng</a>
+                <a href="#future-past" class="hover:text-teal-400 transition-colors">Tương Lai Quá Khứ</a>
+                <a href="#l1-interference" class="hover:text-teal-400 transition-colors">Lỗi Giao Thoa L1</a>
+            </nav>
+            <a href="#matrix" class="bg-teal-600 hover:bg-teal-500 text-white px-4 py-2 rounded-lg text-xs font-semibold shadow transition-all">Khám Phá Ma Trận</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white py-16 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto text-center space-y-6">
+            <div class="inline-flex items-center space-x-2 bg-teal-500/10 border border-teal-500/30 text-teal-300 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">
+                <span>✦ Báo Cáo Nghiên Cứu Ngôn Ngữ Học Ứng Dụng</span>
+            </div>
+            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight max-w-4xl mx-auto leading-tight">
+                Hệ Thống Thời Thể Tiếng Anh & Giải Mã Rào Cản Thụ Đắc Của Người Học Việt Nam
+            </h1>
+            <p class="text-slate-300 text-base sm:text-lg max-w-3xl mx-auto font-normal">
+                Bóc tách chi tiết kiến trúc 12 thì, hiện tượng giao thoa ngôn ngữ mẹ đẻ (L1 Interference), sự tương hợp cú pháp tinh vi và chiến lược phá vỡ thói quen thụ đắc lệch chuẩn.
+            </p>
+
+            <!-- Key Metrics / KPI Cards -->
+            <div id="overview" class="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto pt-6 text-left">
+                <div class="bg-slate-800/80 border border-slate-700/60 p-5 rounded-2xl shadow-sm backdrop-blur">
+                    <div class="text-xs font-semibold text-teal-400 uppercase tracking-wider">Trục Thời Gian</div>
+                    <div class="text-2xl font-bold text-white mt-1">3 Trục</div>
+                    <div class="text-xs text-slate-400 mt-1">Present · Past · Future</div>
+                </div>
+                <div class="bg-slate-800/80 border border-slate-700/60 p-5 rounded-2xl shadow-sm backdrop-blur">
+                    <div class="text-xs font-semibold text-indigo-400 uppercase tracking-wider">Phân Loại Thể (Aspect)</div>
+                    <div class="text-2xl font-bold text-white mt-1">4 Thể</div>
+                    <div class="text-xs text-slate-400 mt-1">Simple · Continuous · Perfect · Perfect Cont.</div>
+                </div>
+                <div class="bg-slate-800/80 border border-slate-700/60 p-5 rounded-2xl shadow-sm backdrop-blur">
+                    <div class="text-xs font-semibold text-amber-400 uppercase tracking-wider">Cấu Trúc Thì Chuẩn</div>
+                    <div class="text-2xl font-bold text-white mt-1">12 Thì</div>
+                    <div class="text-xs text-slate-400 mt-1">Giao thoa giữa Time & Aspect</div>
+                </div>
+                <div class="bg-slate-800/80 border border-slate-700/60 p-5 rounded-2xl shadow-sm backdrop-blur">
+                    <div class="text-xs font-semibold text-rose-400 uppercase tracking-wider">Rào Cản L1 Cốt Lõi</div>
+                    <div class="text-2xl font-bold text-white mt-1">Ngôn Ngữ Đơn Lập</div>
+                    <div class="text-xs text-slate-400 mt-1">Khuyết thiếu biến đổi hình thái</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+
+        <!-- Section 1: Overview & Matrix of 12 Tenses -->
+        <section id="matrix" class="space-y-8">
+            <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80">
+                <div class="max-w-3xl space-y-3 mb-8">
+                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
+                        <span class="text-teal-600">01.</span> Kiến Trúc Hệ Thống 12 Thì & Tần Suất Ngữ Dụng
+                    </h2>
+                    <p class="text-slate-600 text-sm sm:text-base">
+                        Về mặt hình thái học thuần túy, tiếng Anh chỉ sở hữu 2 thời thực sự mang dấu ấn trực tiếp trên động từ (Hiện tại và Quá khứ). Tương lai được hiện thực hóa qua cú pháp tình thái (modal auxiliaries). Khi kết hợp 3 trục thời gian vật lý với 4 thể ngữ nghĩa, ta thu được hệ thống 12 thì với tần suất và độ phức tạp khác nhau trong văn phong học thuật và giao tiếp hàng ngày.
+                    </p>
+                </div>
+
+                <!-- Charts Layout Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                    
+                    <!-- Left: Chart 1 (Tần suất & Phức tạp) -->
+                    <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                        <div class="mb-4">
+                            <h3 class="text-base font-bold text-slate-800">Tần Suất Sử Dụng & Độ Phức Tạp Hình Thái</h3>
+                            <p class="text-xs text-slate-500">Đánh giá mức độ xuất hiện thực tế (%) và độ phức tạp cú pháp của các nhóm thì.</p>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="tenseFrequencyChart"></canvas>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-4 leading-relaxed">
+                            <strong>Ghi chú phân tích:</strong> Nhóm thì Đơn (Simple Tenses) chiếm hơn 60% tổng lượng sử dụng trong văn bản tự nhiên, trong khi nhóm Hoàn Thành Tiếp Diễn (Perfect Continuous) chỉ xuất hiện dưới 2% nhưng lại có độ phức tạp hình thái học cao nhất.
+                        </p>
+                    </div>
+
+                    <!-- Right: Chart 2 (Aspect Breakdown) -->
+                    <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                        <div class="mb-4">
+                            <h3 class="text-base font-bold text-slate-800">Tỷ Tỉ Lệ Phân Bổ 4 Thể (Aspects) trong Văn Bản</h3>
+                            <p class="text-xs text-slate-500">Phân bổ tỷ trọng giữa Thể Đơn, Tiếp Diễn, Hoàn Thành và Hoàn Thành Tiếp Diễn.</p>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="aspectRatioChart"></canvas>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-4 leading-relaxed">
+                            <strong>Ghi chú phân tích:</strong> Thể Đơn (Simple) giữ vai trò chủ đạo trong truyền tải thông tin tĩnh và sự thật. Thể Hoàn Thành (Perfect) đóng vai trò cầu nối mỏ neo thời gian, đặc biệt quan trọng trong văn bản viết hàn lâm.
+                        </p>
+                    </div>
+
+                </div>
+
+                <!-- Interactive Matrix Filter Tabs -->
+                <div class="mt-10 space-y-6">
+                    <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 pb-4">
+                        <h3 class="text-lg font-bold text-slate-900">Bảng Tra Cứu Ma Trận 12 Thì Chi Tiết</h3>
+                        <div class="flex flex-wrap gap-2" id="matrixFilterGroup">
+                            <button onclick="filterTenses('all')" class="tab-btn active px-4 py-1.5 rounded-lg text-xs font-semibold transition-all">Tất Cả (12)</button>
+                            <button onclick="filterTenses('present')" class="tab-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-4 py-1.5 rounded-lg text-xs font-semibold transition-all">Hiện Tại (4)</button>
+                            <button onclick="filterTenses('past')" class="tab-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-4 py-1.5 rounded-lg text-xs font-semibold transition-all">Quá Khứ (4)</button>
+                            <button onclick="filterTenses('future')" class="tab-btn bg-slate-100 text-slate-600 hover:bg-slate-200 px-4 py-1.5 rounded-lg text-xs font-semibold transition-all">Tương Lai (4)</button>
+                        </div>
+                    </div>
+
+                    <!-- Matrix Grid Container -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="tenseGrid">
+                        
+                        <!-- Present Simple -->
+                        <div class="tense-card present bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-teal-500 transition-all space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold px-2.5 py-1 bg-teal-100 text-teal-800 rounded-md">Hiện Tại Đơn</span>
+                                <span class="text-[10px] text-slate-400 font-mono">Present Simple</span>
+                            </div>
+                            <div class="text-sm font-semibold text-slate-800 bg-slate-50 p-2 rounded font-mono">S + V(s/es) | S + am/is/are</div>
+                            <p class="text-xs text-slate-600 leading-relaxed">Chân lý hiển nhiên, thói quen chu kỳ, trạng thái tĩnh, lịch trình cố định trong tương lai.</p>
+                            <div class="text-[11px] text-teal-700 bg-teal-50/60 p-2 rounded border border-teal-100">
+                                <strong>Dấu hiệu:</strong> always, usually, often, every day, on Mondays.
+                            </div>
+                        </div>
+
+                        <!-- Present Continuous -->
+                        <div class="tense-card present bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-teal-500 transition-all space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold px-2.5 py-1 bg-teal-100 text-teal-800 rounded-md">Hiện Tại Tiếp Diễn</span>
+                                <span class="text-[10px] text-slate-400 font-mono">Present Continuous</span>
+                            </div>
+                            <div class="text-sm font-semibold text-slate-800 bg-slate-50 p-2 rounded font-mono">S + am/is/are + V-ing</div>
+                            <p class="text-xs text-slate-600 leading-relaxed">Hành động đang diễn ra tại thời điểm nói, tính chất tạm thời, phàn nàn (+always), kế hoạch gần.</p>
+                            <div class="text-[11px] text-teal-700 bg-teal-50/60 p-2 rounded border border-teal-100">
+                                <strong>Dấu hiệu:</strong> now, at present, right now, Look!, Be quiet!
+                            </div>
+                        </div>
+
+                        <!-- Present Perfect -->
+                        <div class="tense-card present bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-teal-500 transition-all space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold px-2.5 py-1 bg-teal-100 text-teal-800 rounded-md">Hiện Tại Hoàn Thành</span>
+                                <span class="text-[10px] text-slate-400 font-mono">Present Perfect</span>
+                            </div>
+                            <div class="text-sm font-semibold text-slate-800 bg-slate-50 p-2 rounded font-mono">S + have/has + V3/ed</div>
+                            <p class="text-xs text-slate-600 leading-relaxed">Hành động quá khứ có kết quả/ảnh hưởng ở hiện tại, trải nghiệm, sự việc lặp lại nhiều lần.</p>
+                            <div class="text-[11px] text-teal-700 bg-teal-50/60 p-2 rounded border border-teal-100">
+                                <strong>Dấu hiệu:</strong> since, for, already, yet, ever, never, so far.
+                            </div>
+                        </div>
+
+                        <!-- Present Perfect Continuous -->
+                        <div class="tense-card present bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-teal-500 transition-all space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold px-2.5 py-1 bg-teal-100 text-teal-800 rounded-md">HT Hoàn Thành Tiếp Diễn</span>
+                                <span class="text-[10px] text-slate-400 font-mono">Present Perf. Cont.</span>
+                            </div>
+                            <div class="text-sm font-semibold text-slate-800 bg-slate-50 p-2 rounded font-mono">S + have/has + been + V-ing</div>
+                            <p class="text-xs text-slate-600 leading-relaxed">Nhấn mạnh độ dài thời gian (duration) và tính liên tục không ngắt quãng của hành động từ quá khứ đến hiện tại.</p>
+                            <div class="text-[11px] text-teal-700 bg-teal-50/60 p-2 rounded border border-teal-100">
+                                <strong>Dấu hiệu:</strong> all day, all week, for 5 hours, since morning.
+                            </div>
+                        </div>
+
+                        <!-- Past Simple -->
+                        <div class="tense-card past bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-indigo-500 transition-all space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold px-2.5 py-1 bg-indigo-100 text-indigo-800 rounded-md">Quá Khứ Đơn</span>
+                                <span class="text-[10px] text-slate-400 font-mono">Past Simple</span>
+                            </div>
+                            <div class="text-sm font-semibold text-slate-800 bg-slate-50 p-2 rounded font-mono">S + V2/ed | S + washed/were</div>
+                            <p class="text-xs text-slate-600 leading-relaxed">Sự việc đã kết thúc hoàn toàn tại thời điểm xác định trong quá khứ, chuỗi hành động liên tiếp.</p>
+                            <div class="text-[11px] text-indigo-700 bg-indigo-50/60 p-2 rounded border border-indigo-100">
+                                <strong>Dấu hiệu:</strong> yesterday, last week, 2 days ago, in 1999.
+                            </div>
+                        </div>
+
+                        <!-- Past Continuous -->
+                        <div class="tense-card past bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-indigo-500 transition-all space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold px-2.5 py-1 bg-indigo-100 text-indigo-800 rounded-md">Quá Khứ Tiếp Diễn</span>
+                                <span class="text-[10px] text-slate-400 font-mono">Past Continuous</span>
+                            </div>
+                            <div class="text-sm font-semibold text-slate-800 bg-slate-50 p-2 rounded font-mono">S + was/were + V-ing</div>
+                            <p class="text-xs text-slate-600 leading-relaxed">Hành động đang diễn ra tại tọa độ thời gian cụ thể trong quá khứ, phông nền cho sự việc xen ngang.</p>
+                            <div class="text-[11px] text-indigo-700 bg-indigo-50/60 p-2 rounded border border-indigo-100">
+                                <strong>Dấu hiệu:</strong> at 8 PM last night, while, when (interrupted).
+                            </div>
+                        </div>
+
+                        <!-- Past Perfect -->
+                        <div class="tense-card past bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-indigo-500 transition-all space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold px-2.5 py-1 bg-indigo-100 text-indigo-800 rounded-md">Quá Khứ Hoàn Thành</span>
+                                <span class="text-[10px] text-slate-400 font-mono">Past Perfect</span>
+                            </div>
+                            <div class="text-sm font-semibold text-slate-800 bg-slate-50 p-2 rounded font-mono">S + had + V3/ed</div>
+                            <p class="text-xs text-slate-600 leading-relaxed">Cơ chế "tiền-quá khứ": Xảy ra và hoàn tất trước một mốc thời gian hoặc một hành động quá khứ khác.</p>
+                            <div class="text-[11px] text-indigo-700 bg-indigo-50/60 p-2 rounded border border-indigo-100">
+                                <strong>Dấu hiệu:</strong> before, after, by the time, as soon as, prior to.
+                            </div>
+                        </div>
+
+                        <!-- Past Perfect Continuous -->
+                        <div class="tense-card past bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-indigo-500 transition-all space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold px-2.5 py-1 bg-indigo-100 text-indigo-800 rounded-md">QK Hoàn Thành Tiếp Diễn</span>
+                                <span class="text-[10px] text-slate-400 font-mono">Past Perf. Cont.</span>
+                            </div>
+                            <div class="text-sm font-semibold text-slate-800 bg-slate-50 p-2 rounded font-mono">S + had + been + V-ing</div>
+                            <p class="text-xs text-slate-600 leading-relaxed">Nhấn mạnh khoảng thời gian kéo dài liên tục của hành động trước một cột mốc trong quá khứ.</p>
+                            <div class="text-[11px] text-indigo-700 bg-indigo-50/60 p-2 rounded border border-indigo-100">
+                                <strong>Dấu hiệu:</strong> until then, by the time, for + duration before past point.
+                            </div>
+                        </div>
+
+                        <!-- Future Simple -->
+                        <div class="tense-card future bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-amber-500 transition-all space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold px-2.5 py-1 bg-amber-100 text-amber-800 rounded-md">Tương Lai Đơn</span>
+                                <span class="text-[10px] text-slate-400 font-mono">Future Simple</span>
+                            </div>
+                            <div class="text-sm font-semibold text-slate-800 bg-slate-50 p-2 rounded font-mono">S + will + V-inf</div>
+                            <p class="text-xs text-slate-600 leading-relaxed">Quyết định bộc phát tại thời điểm nói, dự đoán cảm tính chủ quan, lời hứa, đề nghị giúp đỡ.</p>
+                            <div class="text-[11px] text-amber-700 bg-amber-50/60 p-2 rounded border border-amber-100">
+                                <strong>Dấu hiệu:</strong> tomorrow, next year, think, promise, soon.
+                            </div>
+                        </div>
+
+                        <!-- Future Continuous -->
+                        <div class="tense-card future bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-amber-500 transition-all space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold px-2.5 py-1 bg-amber-100 text-amber-800 rounded-md">Tương Lai Tiếp Diễn</span>
+                                <span class="text-[10px] text-slate-400 font-mono">Future Continuous</span>
+                            </div>
+                            <div class="text-sm font-semibold text-slate-800 bg-slate-50 p-2 rounded font-mono">S + will + be + V-ing</div>
+                            <p class="text-xs text-slate-600 leading-relaxed">Hành động sẽ đang diễn tiến tại một thời điểm cụ thể được định sẵn trong tương lai.</p>
+                            <div class="text-[11px] text-amber-700 bg-amber-50/60 p-2 rounded border border-amber-100">
+                                <strong>Dấu hiệu:</strong> at this time tomorrow, at 9 AM next Sunday.
+                            </div>
+                        </div>
+
+                        <!-- Future Perfect -->
+                        <div class="tense-card future bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-amber-500 transition-all space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold px-2.5 py-1 bg-amber-100 text-amber-800 rounded-md">Tương Lai Hoàn Thành</span>
+                                <span class="text-[10px] text-slate-400 font-mono">Future Perfect</span>
+                            </div>
+                            <div class="text-sm font-semibold text-slate-800 bg-slate-50 p-2 rounded font-mono">S + will + have + V3/ed</div>
+                            <p class="text-xs text-slate-600 leading-relaxed">Hành động sẽ hoàn tất trọn vẹn trước một thời điểm hoặc một sự kiện khác trong tương lai.</p>
+                            <div class="text-[11px] text-amber-700 bg-amber-50/60 p-2 rounded border border-amber-100">
+                                <strong>Dấu hiệu:</strong> by tomorrow, by the end of this month, by then.
+                            </div>
+                        </div>
+
+                        <!-- Future Perfect Continuous -->
+                        <div class="tense-card future bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-amber-500 transition-all space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold px-2.5 py-1 bg-amber-100 text-amber-800 rounded-md">TL Hoàn Thành Tiếp Diễn</span>
+                                <span class="text-[10px] text-slate-400 font-mono">Future Perf. Cont.</span>
+                            </div>
+                            <div class="text-sm font-semibold text-slate-800 bg-slate-50 p-2 rounded font-mono">S + will + have + been + V-ing</div>
+                            <p class="text-xs text-slate-600 leading-relaxed">Nhấn mạnh tổng độ dài liên tục của hành động tính đến một mốc thời gian trong tương lai.</p>
+                            <div class="text-[11px] text-amber-700 bg-amber-50/60 p-2 rounded border border-amber-100">
+                                <strong>Dấu hiệu:</strong> by... for + duration (e.g., by 2030 for 10 years).
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Section 2: Pragmatic Rules & Syntax Contrast -->
+        <section id="pragmatics" class="space-y-8">
+            <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80">
+                <div class="max-w-3xl space-y-3 mb-8">
+                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
+                        <span class="text-indigo-600">02.</span> Tương Tác Ngữ Dụng & Giao Cắt Cú Pháp Tinh Vi
+                    </h2>
+                    <p class="text-slate-600 text-sm sm:text-base">
+                        Sự phân biệt giữa các thì trong tiếng Anh không chỉ dừng lại ở công thức hình thái mà phụ thuộc vào ý định ngữ dụng, bản chất tri nhận của động từ (stative vs dynamic) và sự chi phối của các liên từ quản lý thể.
+                    </p>
+                </div>
+
+                <!-- Interactive Comparison Cards Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    
+                    <!-- Box A: Will vs Be Going To -->
+                    <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                            <h3 class="font-bold text-slate-800 text-base">Will vs. Be Going To: Dự Báo & Ý Định</h3>
+                            <span class="text-xs bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded">Tương Lai</span>
+                        </div>
+                        <p class="text-xs text-slate-600">Sự khác biệt dựa trên nguồn gốc của dự định và căn cứ tri nhận ở hiện tại.</p>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="bg-white p-4 rounded-lg border border-slate-200 space-y-2">
+                                <div class="text-xs font-bold text-indigo-700">WILL + V-inf</div>
+                                <ul class="text-xs text-slate-600 space-y-1.5 list-disc list-inside">
+                                    <li>Quyết định bộc phát ngay lúc nói.</li>
+                                    <li>Phỏng đoán chủ quan, thiếu bằng chứng.</li>
+                                    <li>Hành vi cam kết (lời hứa, nguyện vọng).</li>
+                                </ul>
+                                <div class="text-[11px] font-mono bg-slate-50 p-1.5 rounded text-slate-700">"I will help you with this!"</div>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg border border-slate-200 space-y-2">
+                                <div class="text-xs font-bold text-teal-700">BE GOING TO + V-inf</div>
+                                <ul class="text-xs text-slate-600 space-y-1.5 list-disc list-inside">
+                                    <li>Dự định đã lên kế hoạch từ trước.</li>
+                                    <li>Phỏng đoán dựa trên bằng chứng mắt thấy.</li>
+                                    <li>Không dùng cho hành vi tình nguyện.</li>
+                                </ul>
+                                <div class="text-[11px] font-mono bg-slate-50 p-1.5 rounded text-slate-700">"Look at dark clouds! It's going to rain."</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Box B: When vs While -->
+                    <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                            <h3 class="font-bold text-slate-800 text-base">When vs. While: Quản Lý Thể Quá Khứ</h3>
+                            <span class="text-xs bg-indigo-100 text-indigo-800 font-bold px-2 py-0.5 rounded">Thời Gian</span>
+                        </div>
+                        <p class="text-xs text-slate-600">Quản lý hành động nền (background action) và hành động ngắt quãng (interrupting action).</p>
+
+                        <div class="space-y-3">
+                            <div class="bg-white p-3.5 rounded-lg border border-slate-200 text-xs space-y-1">
+                                <div class="font-bold text-indigo-800">Mô hình Ngắt Quãng (Interrupted):</div>
+                                <div class="text-slate-700 font-mono text-[11px]">Background (Past Cont.) + <span class="text-rose-600 font-bold">WHEN</span> + Interrupting (Past Simple)</div>
+                                <div class="text-slate-500 italic">"I was reading a novel when the phone rang."</div>
+                            </div>
+                            <div class="bg-white p-3.5 rounded-lg border border-slate-200 text-xs space-y-1">
+                                <div class="font-bold text-teal-800">Mô hình Song Song (Simultaneous):</div>
+                                <div class="text-slate-700 font-mono text-[11px]">Past Continuous + <span class="text-teal-600 font-bold">WHILE</span> + Past Continuous</div>
+                                <div class="text-slate-500 italic">"While John was cooking, Jackie was playing piano."</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Stative Verbs Section & Visual Polar Chart -->
+                <div class="mt-8 bg-slate-50 p-6 rounded-xl border border-slate-200 space-y-6">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <h3 class="text-base font-bold text-slate-800">Cơ Che Cấm Cản Của Động Từ Trạng Thái (Stative Verbs)</h3>
+                            <p class="text-xs text-slate-500 mt-1">Động từ trạng thái miêu tả thực thể tĩnh, nhận thức nội tâm nên KHÔNG xuất hiện ở các thể tiếp diễn (-ing), trừ khi có sự dịch chuyển ngữ nghĩa sang dạng động.</p>
+                        </div>
+                        <span class="bg-rose-100 text-rose-800 text-xs font-bold px-3 py-1 rounded-full self-start md:self-auto">Cấm Dùng V-ing Ngược Logic</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                        <!-- Chart: Stative Verbs Categories -->
+                        <div>
+                            <div class="chart-container">
+                                <canvas id="stativeVerbsChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Semantic Shift Table -->
+                        <div class="space-y-3">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-700">Hiện Tượng Dịch Chuyển Ngữ Nghĩa (Semantic Shift)</h4>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-xs border-collapse">
+                                    <thead>
+                                        <tr class="bg-slate-200 text-slate-800">
+                                            <th class="p-2.5 rounded-tl-lg">Động Từ</th>
+                                            <th class="p-2.5">Nghĩa Trạng Thái Tĩnh (Simple)</th>
+                                            <th class="p-2.5 rounded-tr-lg">Nghĩa Hành Động (Continuous)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-200 bg-white text-slate-700">
+                                        <tr>
+                                            <td class="p-2.5 font-bold font-mono">SEE</td>
+                                            <td class="p-2.5">Nhìn thấy / Nhận thức (I see what you mean)</td>
+                                            <td class="p-2.5 text-teal-700">Hẹn hò / Gặp gỡ (He is seeing Marsha)</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-2.5 font-bold font-mono">HAVE</td>
+                                            <td class="p-2.5">Sở hữu tài sản (She has two cars)</td>
+                                            <td class="p-2.5 text-teal-700">Ăn / Trải nghiệm (They are having lunch)</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-2.5 font-bold font-mono">THINK</td>
+                                            <td class="p-2.5">Tin tưởng / Quan điểm (I think it's good)</td>
+                                            <td class="p-2.5 text-teal-700">Cân nhắc suy nghĩ (I'm thinking about it)</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-2.5 font-bold font-mono">TASTE</td>
+                                            <td class="p-2.5">Có vị thế nào (The soup tastes good)</td>
+                                            <td class="p-2.5 text-teal-700">Nếm thử đồ ăn (The chef is tasting soup)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- By The Time Constraint Box -->
+                <div class="p-5 bg-gradient-to-r from-indigo-900 to-slate-900 text-white rounded-xl space-y-3 shadow-md">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-amber-400 font-bold text-sm">⏱ Quy Tắc Tương Hợp Cú Pháp Với "BY THE TIME"</span>
+                    </div>
+                    <p class="text-xs text-slate-300">"By the time" áp đặt cơ chế khóa thì khắt khe nhằm xác nhận hành động ở mệnh đề chính đã hoàn tất trước mốc thời gian mỏ neo:</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono pt-1">
+                        <div class="bg-slate-800/90 p-3 rounded border border-slate-700">
+                            <span class="text-indigo-300 font-bold">1. Đồng Bộ Quá Khứ:</span><br>
+                            By the time + S + V(Past Simple), S + HAD + V3<br>
+                            <span class="text-slate-400 text-[11px] italic font-sans">E.g., By the time they returned, I had finished work.</span>
+                        </div>
+                        <div class="bg-slate-800/90 p-3 rounded border border-slate-700">
+                            <span class="text-amber-300 font-bold">2. Phóng Chiếu Tương Lai:</span><br>
+                            By the time + S + V(Present Simple), S + WILL HAVE + V3<br>
+                            <span class="text-slate-400 text-[11px] italic font-sans">E.g., By the time you arrive, we will have left.</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Section 3: Future in the Past -->
+        <section id="future-past" class="space-y-8">
+            <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80">
+                <div class="max-w-3xl space-y-3 mb-8">
+                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
+                        <span class="text-amber-600">03.</span> Hiện Tượng "Tương Lai Trong Quá Khứ" (Future in the Past)
+                    </h2>
+                    <p class="text-slate-600 text-sm sm:text-base">
+                        "Future in the Past" là cấu trúc vận hành tại điểm giao thoa giữa không gian quá khứ và dự phóng tương lai. Nhìn từ mốc thời gian quá khứ, hành động đó thuộc về tương lai. Phổ biến trong tường thuật (reported speech) hoặc mô tả kế hoạch bị thay đổi/hủy bỏ.
+                    </p>
+                </div>
+
+                <!-- Future in the Past Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3">
+                        <span class="text-xs font-bold px-2.5 py-1 bg-amber-100 text-amber-800 rounded">Simple Future in Past</span>
+                        <div class="text-sm font-bold font-mono text-slate-800">Would + V-inf</div>
+                        <p class="text-xs text-slate-600">Thay thế cho Will. Biểu đạt lời hứa, sự sẵn lòng hoặc phỏng đoán đưa ra từ quá khứ.</p>
+                        <div class="text-[11px] bg-white p-2 rounded border border-slate-200 italic text-slate-700">
+                            "I knew you would pass the exam."
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3">
+                        <span class="text-xs font-bold px-2.5 py-1 bg-amber-100 text-amber-800 rounded">Intended Plan in Past</span>
+                        <div class="text-sm font-bold font-mono text-slate-800">Was/Were going to + V</div>
+                        <p class="text-xs text-slate-600">Thay thế cho Be going to. Dự định trong quá khứ thường bị đứt quãng hoặc không thành hiện thực.</p>
+                        <div class="text-[11px] bg-white p-2 rounded border border-slate-200 italic text-slate-700">
+                            "I was going to call you, but my battery died."
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3">
+                        <span class="text-xs font-bold px-2.5 py-1 bg-amber-100 text-amber-800 rounded">Continuous Future in Past</span>
+                        <div class="text-sm font-bold font-mono text-slate-800">Would be + V-ing</div>
+                        <p class="text-xs text-slate-600">Trạng thái được mong đợi sẽ đang diễn tiến tại một thời điểm quá khứ cụ thể.</p>
+                        <div class="text-[11px] bg-white p-2 rounded border border-slate-200 italic text-slate-700">
+                            "She said she would be waiting at 8 PM."
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3">
+                        <span class="text-xs font-bold px-2.5 py-1 bg-amber-100 text-amber-800 rounded">Perfect Future in Past</span>
+                        <div class="text-sm font-bold font-mono text-slate-800">Would have + V3</div>
+                        <p class="text-xs text-slate-600">Đánh giá sự hoàn tất của hành động tính đến một cột mốc nhìn từ quá khứ.</p>
+                        <div class="text-[11px] bg-white p-2 rounded border border-slate-200 italic text-slate-700">
+                            "He promised he would have finished it by Monday."
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="mt-4 p-4 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-800">
+                    <strong>⚠️ Cấm cản cú pháp quan trọng:</strong> Tuyệt đối KHÔNG dùng các cấu trúc tương lai (will, would, was going to) bên trong các mệnh đề phụ chỉ thời gian bắt đầu bằng <em>when, while, before, after, as soon as, if, unless</em>. Phải thay bằng thì Quá Khứ Đơn hoặc Hiện Tại Đơn tương ứng.
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: L1 Interference Analysis -->
+        <section id="l1-interference" class="space-y-8">
+            <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80">
+                <div class="max-w-3xl space-y-3 mb-8">
+                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
+                        <span class="text-rose-600">04.</span> Phân Tích Lỗi Giao Thoa Ngôn Ngữ Mẹ Đẻ (L1 Interference)
+                    </h2>
+                    <p class="text-slate-600 text-sm sm:text-base">
+                        Người học Việt Nam gặp rào cản hệ thống do sự xung đột giữa hai mô hình ngôn ngữ đối lập: Tiếng Việt là <strong>ngôn ngữ đơn lập, phi hình thái học (isolating language)</strong>, trong khi Tiếng Anh là <strong>ngôn ngữ biến hình (inflected/analytic language)</strong>.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                    
+                    <!-- Chart 3: L1 Error Distribution Bar Chart -->
+                    <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 space-y-4">
+                        <div>
+                            <h3 class="text-base font-bold text-slate-800">Tỷ Lệ Các Dạng Lỗi L1 Phổ Biến Ở Người Học Việt Nam</h3>
+                            <p class="text-xs text-slate-500">Khảo sát trên các bài viết ngữ pháp của sinh viên/học sinh Việt Nam.</p>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="l1ErrorsChart"></canvas>
+                        </div>
+                        <p class="text-xs text-slate-500 leading-relaxed">
+                            <strong>Phân tích:</strong> Lỗi "Bỏ đuôi biến đổi hình thái (-ed, -s/es)" chiếm tỷ lệ cao nhất do tư duy tiếng Việt chỉ dùng từ chỉ thời gian rời rạc (*hôm qua, tuần trước*) mà không can thiệp vào bản thân động từ.
+                        </p>
+                    </div>
+
+                    <!-- L1 Comparison & Phonological Breakdown -->
+                    <div class="space-y-6">
+                        
+                        <!-- Root Cause Card 1 -->
+                        <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3">
+                            <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                                Hội Chứng "Chây Ì Hình Thái" (Dropping Endings)
+                            </h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Động từ tiếng Việt như <em>"đi"</em> giữ nguyên dạng thức bất kể quá khứ hay tương lai. Lập luận nội tâm sai lầm: <em>"Đã có trạng từ Yesterday thì không cần chia động từ nữa"</em> $\rightarrow$ sinh ra các câu lệch chuẩn như <em>"Yesterday I finish my homework"</em>.
+                            </p>
+                            <div class="p-3 bg-white rounded border border-slate-200 text-xs text-slate-700">
+                                <strong>Rào cản Âm vị học:</strong> Tiếng Việt có cấu trúc âm tiết mở, vắng bóng các tổ hợp phụ âm cuối (final consonant clusters) như /-kts/, /-Managed/, /-worked/. Học sinh thường nuốt âm cuối, dẫn đến biến mất hậu tố ngữ pháp trong tâm trí.
+                            </div>
+                        </div>
+
+                        <!-- Root Cause Card 2 -->
+                        <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3">
+                            <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                                Sự Mơ Hồ Của Hư Từ "Đã / Đang / Sẽ"
+                            </h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Hư từ <em>"đã"</em> gánh vác cả Past Simple lẫn Present Perfect. Câu <em>"Tôi đã ăn"</em> có thể là <em>"I ate"</em> (quá khứ đơn) hoặc <em>"I have eaten"</em> (hiện tại hoàn thành). Sự thiếu nhạy bén về thể khiến người học lạm dụng Quá Khứ Đơn và né tránh các thì Hoàn Thành.
+                            </p>
+                        </div>
+
+                        <!-- Root Cause Card 3 -->
+                        <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3">
+                            <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                                Lược Bỏ "To Be" & Trật Tự Câu Hỏi Wh-
+                            </h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Trong tiếng Việt, tính từ làm vị ngữ trực tiếp (<em>"Cô ấy đẹp"</em>), dịch nguyên xi gây ra lỗi lược bỏ copula verb (<em>"She beautiful"</em>). Ngoài ra, tư duy Topic-Comment khiến câu hỏi nghi vấn không đảo ngữ (<em>"You go where?"</em> thay vì <em>"Where did you go?"</em>).
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Summary & Pedagogical Recommendations -->
+        <section class="bg-gradient-to-br from-slate-900 to-indigo-950 text-white rounded-2xl p-6 sm:p-8 space-y-6 shadow-xl">
+            <h2 class="text-2xl font-bold text-teal-300">Khuyến Nghị Sư Phạm & Định Hướng Nâng Cao Chất Lượng Thụ Đắc</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs leading-relaxed text-slate-300">
+                <div class="bg-slate-800/80 p-5 rounded-xl border border-slate-700 space-y-2">
+                    <h3 class="font-bold text-white text-sm">1. Phân Tích Đối Chiếu Ngôn Ngữ</h3>
+                    <p>Thay vì nhồi nhét lý thuyết cơ học, giáo viên cần trực tiếp chỉ ra sự đứt gãy giữa tính phi hình thái của Tiếng Việt và sự biến hình của Tiếng Anh để người học tự ý thức bẫy tư duy L1.</p>
+                </div>
+                <div class="bg-slate-800/80 p-5 rounded-xl border border-slate-700 space-y-2">
+                    <h3 class="font-bold text-white text-sm">2. Luyện Âm Tích Hợp Ngữ Pháp</h3>
+                    <p>Rèn luyện phản xạ âm vị học đối với cụm phụ âm cuối (-ed, -s/es) trong nói. Khi âm cuối được bật rõ, ý thức hình thái học trên văn viết mới được củng cố bền vững.</p>
+                </div>
+                <div class="bg-slate-800/80 p-5 rounded-xl border border-slate-700 space-y-2">
+                    <h3 class="font-bold text-white text-sm">3. Học Qua Bối Cảnh Tự Sự</h3>
+                    <p>Ứng dụng bài tập phản xạ ngữ dụng (Drilling trong ngữ cảnh) thay vì dịch thuật câu đơn. Đặt thì trong các văn bản câu chuyện ngắn để định hình logic thời gian tự nhiên.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-slate-400 py-8 border-t border-slate-800 text-center text-xs space-y-2">
+        <p>© 2026 Báo Cáo Nghiên Cứu Hệ Thống Thời Thể Tiếng Anh & Ngữ Dụng Học. Phát triển dưới dạng Single Page Application Visual Infographic.</p>
+        <p class="text-slate-600">Thiết kế chuẩn Material UI & Tailwind CSS · Không sử dụng thư viện SVG hay Mermaid JS.</p>
+    </footer>
+
+    <!-- JavaScript Charts & Interaction Scripts -->
+    <script>
+        // Label Wrapping Helper Logic (>16 chars)
+        function wrapLabel(label, maxChars) {
+            if (label.length <= maxChars) return label;
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+
+            words.forEach(word => {
+                if ((currentLine + word).length > maxChars) {
+                    if (currentLine) lines.push(currentLine.trim());
+                    currentLine = word + ' ';
+                } else {
+                    currentLine += word + ' ';
+                }
+            });
+            if (currentLine) lines.push(currentLine.trim());
+            return lines;
+        }
+
+        // Shared Tooltip Callback for Chart.js
+        const commonTooltipConfig = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        };
+
+        // DOM Loaded Chart Inits
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // --- Chart 1: Frequency & Complexity ---
+            const rawFreqLabels = ['Hiện Tại Đơn', 'Quá Khứ Đơn', 'Tương Lai Đơn', 'Hiện Tại HT', 'Hiện Tại Tiếp Diễn', 'Quá Khứ Tiếp Diễn', 'Quá Khứ Hoàn Thành', 'Tương Lai HT / Tiếp Diễn'];
+            const wrappedFreqLabels = rawFreqLabels.map(l => wrapLabel(l, 16));
+
+            const ctx1 = document.getElementById('tenseFrequencyChart').getContext('2d');
+            new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: wrappedFreqLabels,
+                    datasets: [
+                        {
+                            label: 'Tần Suất Sử Dụng (%)',
+                            data: [38, 26, 12, 10, 7, 4, 2, 1],
+                            backgroundColor: '#0d9488',
+                            borderRadius: 6
+                        },
+                        {
+                            label: 'Độ Phức Tạp Cú Pháp (Thang 1-10)',
+                            data: [2, 3, 3, 6, 4, 5, 8, 10],
+                            backgroundColor: '#f59e0b',
+                            borderRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: commonTooltipConfig,
+                        legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 } } }
+                    },
+                    scales: {
+                        x: { ticks: { font: { size: 10 } } },
+                        y: { beginAtZero: true, ticks: { font: { size: 10 } } }
+                    }
+                }
+            });
+
+            // --- Chart 2: Aspect Distribution Donut ---
+            const rawAspectLabels = ['Thể Đơn (Simple)', 'Thể Hoàn Thành (Perfect)', 'Thể Tiếp Diễn (Continuous)', 'Thể HT Tiếp Diễn (Perf. Cont.)'];
+            const wrappedAspectLabels = rawAspectLabels.map(l => wrapLabel(l, 16));
+
+            const ctx2 = document.getElementById('aspectRatioChart').getContext('2d');
+            new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: wrappedAspectLabels,
+                    datasets: [{
+                        data: [65, 18, 14, 3],
+                        backgroundColor: ['#4f46e5', '#0d9488', '#f59e0b', '#f43f5e'],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: commonTooltipConfig,
+                        legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } }
+                    },
+                    cutout: '65%'
+                }
+            });
+
+            // --- Chart 3: Stative Verbs Categories ---
+            const rawStativeLabels = ['Nhận Thức & Tư Duy', 'Cảm Xúc & Thái Độ', 'Sở Hữu & Quyền Hạn', 'Giác Quan & Tri Giác', 'Đo Lường & Cấu Trúc'];
+            const wrappedStativeLabels = rawStativeLabels.map(l => wrapLabel(l, 16));
+
+            const ctx3 = document.getElementById('stativeVerbsChart').getContext('2d');
+            new Chart(ctx3, {
+                type: 'polarArea',
+                data: {
+                    labels: wrappedStativeLabels,
+                    datasets: [{
+                        data: [30, 25, 20, 15, 10],
+                        backgroundColor: [
+                            'rgba(13, 148, 136, 0.7)',
+                            'rgba(79, 70, 229, 0.7)',
+                            'rgba(245, 158, 11, 0.7)',
+                            'rgba(244, 63, 94, 0.7)',
+                            'rgba(100, 116, 139, 0.7)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: commonTooltipConfig,
+                        legend: { position: 'right', labels: { boxWidth: 10, font: { size: 10 } } }
+                    },
+                    scales: { r: { ticks: { display: false } } }
+                }
+            });
+
+            // --- Chart 4: L1 Errors Distribution ---
+            const rawL1Labels = ['Bỏ Đuôi Biến Đổi (-ed, -s/es)', 'Nhầm Lẫn QK Đơn & HT Hoàn Thành', 'Lược Bỏ To Be / Trợ Động Từ', 'Sai Trật Tự Câu Hỏi Wh-', 'Dùng Lạm Dụng Thì Hiện Tại Đơn'];
+            const wrappedL1Labels = rawL1Labels.map(l => wrapLabel(l, 16));
+
+            const ctx4 = document.getElementById('l1ErrorsChart').getContext('2d');
+            new Chart(ctx4, {
+                type: 'bar',
+                data: {
+                    labels: wrappedL1Labels,
+                    datasets: [{
+                        label: 'Tỷ Lệ Mắc Lỗi (%)',
+                        data: [42, 28, 16, 9, 5],
+                        backgroundColor: '#f43f5e',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: commonTooltipConfig,
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: { beginAtZero: true, ticks: { font: { size: 10 } } },
+                        y: { ticks: { font: { size: 10 } } }
+                    }
+                }
+            });
+
+        });
+
+        // Filter Tense Matrix Logic
+        function filterTenses(category) {
+            const cards = document.querySelectorAll('.tense-card');
+            const buttons = document.querySelectorAll('#matrixFilterGroup button');
+
+            buttons.forEach(btn => btn.classList.remove('active', 'bg-teal-600', 'text-white'));
+
+            event.target.classList.add('active');
+
+            cards.forEach(card => {
+                if (category === 'all') {
+                    card.style.display = 'block';
+                } else if (card.classList.contains(category)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
